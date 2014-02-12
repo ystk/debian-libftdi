@@ -1,5 +1,5 @@
 # Includes
-include_directories( ${CMAKE_CURRENT_BINARY_DIR}
+include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}
                      ${CMAKE_CURRENT_SOURCE_DIR}
                      )
 
@@ -37,7 +37,7 @@ if(${UNIX})
             )
 
    install( FILES ${c_headers}
-            DESTINATION include/${PROJECT_NAME}
+            DESTINATION include
             COMPONENT headers
             )
 
@@ -56,7 +56,7 @@ if(${WIN32})
             )
 
    install( FILES ${c_headers}
-            DESTINATION include/${PROJECT_NAME}
+            DESTINATION include
             COMPONENT headers
             )
 

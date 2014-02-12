@@ -6,9 +6,9 @@ option(FTDIPP "Build C++ binding library libftdi++" ON)
 if (FTDIPP)
 
     # Includes
-    include_directories( ${CMAKE_CURRENT_BINARY_DIR}
+    include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}
                         ${CMAKE_CURRENT_SOURCE_DIR}
-                        ${CMAKE_CURRENT_SOURCE_DIR}/../src
+                        ${CMAKE_SOURCE_DIR}/src
                         )
 
     # Targets
@@ -52,7 +52,7 @@ if (FTDIPP)
                 )
 
     install( FILES ${cpp_headers}
-                DESTINATION include/${PROJECT_NAME}
+                DESTINATION include
                 COMPONENT headers
                 )
 
@@ -71,7 +71,7 @@ if (FTDIPP)
                 )
 
     install( FILES ${cpp_headers}
-                DESTINATION include/${PROJECT_NAME}
+                DESTINATION include
                 COMPONENT headers
                 )
 

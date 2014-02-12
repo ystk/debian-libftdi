@@ -1,7 +1,7 @@
 # Project
 project(libftdi)
 set(MAJOR_VERSION 0)
-set(MINOR_VERSION 18)
+set(MINOR_VERSION 20)
 set(VERSION_STRING ${MAJOR_VERSION}.${MINOR_VERSION})
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}")
 
@@ -12,6 +12,7 @@ endif("${CMAKE_BUILD_TYPE}" STREQUAL "")
 set(CMAKE_COLOR_MAKEFILE ON)
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 
+add_definitions(-Wall)
 # Debug build
 message("-- Build type: ${CMAKE_BUILD_TYPE}")
 if(${CMAKE_BUILD_TYPE} STREQUAL Debug)
@@ -114,8 +115,8 @@ if(DOCUMENTATION AND DOXYGEN_FOUND)
    # Create doc directory
    add_custom_command(
    OUTPUT ${CMAKE_BINARY_DIR}/doc
-   COMMAND rm -rf ${CMAKE_BINARY_DIR}/doc
-   COMMAND mkdir ${CMAKE_BINARY_DIR}/doc
+   COMMAND rm -rf ${CMAKE_BINARY_DIR}/doc/{html,man}
+   COMMAND mkdir -p ${CMAKE_BINARY_DIR}/doc
    DEPENDS ftdi ftdipp
    )
 

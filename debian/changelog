@@ -1,3 +1,50 @@
+libftdi (0.20-1) unstable; urgency=low
+
+  * New upstream version.
+  * Bumped Standards-Version to 3.9.3 (no changes).
+
+ -- Aurelien Jarno <aurel32@debian.org>  Tue, 03 Apr 2012 22:46:49 +0200
+
+libftdi (0.19-4) unstable; urgency=low
+
+  * Add a dependency from libftdipp-dev to libftdipp1. 
+
+ -- Aurelien Jarno <aurel32@debian.org>  Sun, 18 Dec 2011 17:47:53 +0100
+
+libftdi (0.19-3) unstable; urgency=medium
+
+  * Install ftdi.py (closes: #631958). 
+  * Switch to dh_python2:
+    - Build-depends on python-all-dev (>= 2.6.6-3~).
+    - Drop build-depends on python-support.
+    - Call dh_python2 instead of dh_pysupport.
+    - Replace debian/pyversion by X-Python-Version.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Tue, 28 Jun 2011 19:50:49 +0200
+
+libftdi (0.19-2) unstable; urgency=low
+
+  * Drop .la files from libftdipp-dev. 
+  * Add build-indep and build-arch targets to make lintian happy. 
+
+ -- Aurelien Jarno <aurel32@debian.org>  Tue, 21 Jun 2011 00:25:52 +0200
+
+libftdi (0.19-1) unstable; urgency=low
+
+  * New upstream version.
+    - Add support for writing FT232R eeproms.
+  * Bumped Standards-Version to 3.9.2 (no changes).
+  * Switched to 3.0 (quilt) format.
+  * Convert to multiarch:
+    - Bump debhelper build-dep to >= 8.1.3 for multiarch.
+    - Add Pre-Depends: ${misc:Pre-Depends} to libftdi1 and libftdipp1
+    and set them Multi-Arch: same.
+    - Install the libraries in the multiarch path.
+  * Dropped .la files from -dev packages are they are not used by any
+    depending package.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Mon, 13 Jun 2011 18:12:48 +0200
+
 libftdi (0.18-1) unstable; urgency=low
 
   * New upstream version. 

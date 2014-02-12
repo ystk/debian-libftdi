@@ -1,6 +1,10 @@
+---
+ src/ftdi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
 --- a/src/ftdi.c
 +++ b/src/ftdi.c
-@@ -1255,7 +1255,7 @@
+@@ -1262,7 +1262,7 @@
  }
  
  #ifdef LIBFTDI_LINUX_ASYNC_MODE

@@ -1,1 +1,2 @@
-python*/usr/lib/python*		usr/lib
+usr/lib/python*/dist-packages/*.so
+usr/lib/python*/dist-packages/*.py

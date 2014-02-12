@@ -1,7 +1,7 @@
 %define    enable_async_mode 0
 Summary:   Library to program and control the FTDI USB controller
 Name:      libftdi
-Version:   0.18
+Version:   0.20
 Release:   1
 License:   LGPL for libftdi and GPLv2+linking exception for the C++ wrapper
 Group:     System Environment/Libraries
@@ -49,7 +49,7 @@ rm -f $RPM_BUILD_ROOT/usr/bin/bitbang_ft2232
 rm -f $RPM_BUILD_ROOT/usr/bin/bitbang_cbus
 rm -f $RPM_BUILD_ROOT/usr/bin/find_all
 rm -f $RPM_BUILD_ROOT/usr/bin/find_all_pp
-rm -f $RPM_BUILD_ROOT/usr/bin/serial_read
+rm -f $RPM_BUILD_ROOT/usr/bin/serial_test
 rm -f $RPM_BUILD_ROOT/usr/bin/baud_test
 
 %clean

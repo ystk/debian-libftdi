@@ -1,0 +1,15 @@
+---
+ bindings/python/Makefile.am |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/bindings/python/Makefile.am
++++ b/bindings/python/Makefile.am
+@@ -36,7 +36,7 @@
+ 		$(PYTHON) setup.py install --prefix="$$NATIVE_WINDOWS_PREFIX" \
+ 	  ;; \
+ 	  *) \
+-		CPPFLAGS="$(CPPFLAGS)" $(PYTHON) setup.py install --prefix=$(DESTDIR)$(prefix) \
++		CPPFLAGS="$(CPPFLAGS)" $(PYTHON) setup.py install --install-layout=deb --prefix=$(DESTDIR)$(prefix) \
+ 	  ;; \
+ 	esac;
+ 

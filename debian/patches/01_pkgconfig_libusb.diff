@@ -25,17 +25,18 @@
 -AC_MSG_CHECKING([if libusb version is >= 0.1.7])
 -libusb_version_needed="1007"
 -libusb_version=`$HAVELIBUSB --version | sed -e "s/libusb //" | awk 'BEGIN { FS = "."; } { printf "%d", ($''1 * 1000 + $''2) * 1000 + $''3;}'`
-+dnl check for libusb
-+PKG_CHECK_MODULES(LIBUSB, libusb >= 0.1.11)
-+CFLAGS="$CFLAGS $LIBUSB_CFLAGS"
-+LIBS="$LIBS $LIBUSB_LIBS"
- 
+-
 -if test $libusb_version -lt $libusb_version_needed; then
 -   AC_MSG_RESULT(no)
 -   AC_MSG_ERROR([*** libusb is too old ($libusb_version). You need a libusb installation newer or equal to 0.1.7.])
 -else
 -   AC_MSG_RESULT(yes)
 -fi
++dnl check for libusb
++PKG_CHECK_MODULES(LIBUSB, libusb >= 0.1.11)
++CFLAGS="$CFLAGS $LIBUSB_CFLAGS"
++LIBS="$LIBS $LIBUSB_LIBS"
++
 +dnl Check for recent pkg-config which supports Requires.private
 +case `$PKG_CONFIG --version` in
 +0.?|0.1[0-7]) PKGCONFIG_REQUIRES="Requires"; ;;

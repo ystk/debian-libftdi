@@ -11,14 +11,11 @@
 # from having to guess our platform (since we know it already)
 DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+DEB_HOST_MULTIARCH  ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
-CFLAGS = -Wall -g
+CFLAGS = -Wall
+CFLAGS += $(shell dpkg-buildflags --get CFLAGS)
 
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
-else
-	CFLAGS += -O2
-endif
 ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
 	INSTALL_PROGRAM += -s
 endif
@@ -33,13 +30,11 @@ endif
 # Available python versions
 PYVERS = $(shell pyversions -v -r debian/control)
 
-patch-stamp:
-	QUILT_PATCHES=debian/patches quilt push -a || test $$? = 2
-	touch $@
+build: build-arch build-indep
 
-build: build-stamp-main $(PYVERS:%=build-stamp-python-%)
+build-arch: build-arch-stamp-main $(PYVERS:%=build-arch-stamp-python-%)
 
-build-stamp-main: patch-stamp
+build-arch-stamp-main:
 	dh_testdir
 	mkdir $(CURDIR)/build-main
 	cd $(CURDIR)/build-main && \
@@ -47,6 +42,7 @@ build-stamp-main: patch-stamp
 			--host=$(DEB_HOST_GNU_TYPE) \
 			--build=$(DEB_BUILD_GNU_TYPE) \
 			--prefix=/usr \
+			--libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH) \
 			--mandir=\$${prefix}/share/man \
 			--infodir=\$${prefix}/share/info \
 			--enable-libftdipp \
@@ -55,7 +51,7 @@ build-stamp-main: patch-stamp
 		$(MAKE)
 	touch $@
 
-build-stamp-python-%: patch-stamp
+build-arch-stamp-python-%:
 	dh_testdir
 	mkdir $(CURDIR)/build-python$*
 	cd $(CURDIR)/build-python$* && \
@@ -63,12 +59,20 @@ build-stamp-python-%: patch-stamp
 			--host=$(DEB_HOST_GNU_TYPE) \
 			--build=$(DEB_BUILD_GNU_TYPE) \
 			--prefix=/usr \
+			--libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH) \
 			--mandir=\$${prefix}/share/man \
 			--infodir=\$${prefix}/share/info \
 			--disable-libftdipp \
+			--without-docs \
 			--enable-python-binding
 	cd $(CURDIR)/build-python$* && \
 		$(MAKE)
+	touch $@
+
+build-indep: build-indep-stamp
+
+build-indep-stamp:
+	dh_testdir 
 	touch $@
 
 install-stamp-common:
@@ -82,22 +86,20 @@ install: install-stamp-main $(PYVERS:%=install-stamp-python-%)
 	dh_install --sourcedir=debian/tmp
 	touch $@
 	
-install-stamp-main: build-stamp-main install-stamp-common
+install-stamp-main: build-arch-stamp-main install-stamp-common
 	cd build-main && \
-		$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp/main
+		$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
 	touch $@
 
-install-stamp-python-%: build-stamp-python-% install-stamp-common
+install-stamp-python-%: build-arch-stamp-python-% install-stamp-common
 	cd build-python$* && \
-		$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp/python$*
+		$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
 	touch $@
 
 clean:
 	dh_testdir
 	dh_testroot
 	rm -rf build-main build-python*
-	QUILT_PATCHES=debian/patches quilt pop -a -R || test $$? = 2
-	rm -rf .pc	
 	rm -f *-stamp*
 	dh_clean 
 
@@ -114,10 +116,12 @@ binary-arch: build install
 	dh_installexamples
 	dh_installman
 	dh_link
-	dh_strip
+	dh_strip -plibftdi1 --dbg-package=libftdi1-dbg
+	dh_strip -plibftdipp1 --dbg-package=libftdipp1-dbg
+	dh_strip --remaining-packages
 	dh_compress
 	dh_fixperms
-	dh_pysupport
+	dh_python2
 	dh_makeshlibs -V
 	dh_installdeb
 	dh_shlibdeps
@@ -126,4 +130,4 @@ binary-arch: build install
 	dh_builddeb
 
 binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install 
+.PHONY: build build-arch build-indep clean binary-indep binary-arch binary install 

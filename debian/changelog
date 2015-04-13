@@ -1,3 +1,9 @@
+libftdi (0.20-2) unstable; urgency=medium
+
+  * Use dh-autoreconf (closes: #748765). 
+
+ -- Aurelien Jarno <aurel32@debian.org>  Sun, 17 Aug 2014 22:30:02 +0200
+
 libftdi (0.20-1) unstable; urgency=low
 
   * New upstream version.
